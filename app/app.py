@@ -1,8 +1,8 @@
 import os
 from skpy import Skype
 
-username = os.environ['SKYPE_USERNAME']
-password = os.environ['SKYPE_PASSWORD']
+username = os.environ["SKYPE_USERNAME"]
+password = os.environ["SKYPE_PASSWORD"]
 
 sk = Skype(username, password)
 
