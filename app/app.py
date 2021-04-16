@@ -4,6 +4,7 @@ from skpy import SkypeEventLoop, SkypeNewMessageEvent, SkypeGroupChat
 
 username = os.environ["SKYPE_USERNAME"]
 password = os.environ["SKYPE_PASSWORD"]
+group_ids = os.environ["SKYPE_GROUP_IDS"].split(",")
 
 
 class MySkypeEventLoop(SkypeEventLoop):
@@ -12,6 +13,9 @@ class MySkypeEventLoop(SkypeEventLoop):
             return
 
         if not isinstance(event.msg.chat, SkypeGroupChat):
+            return
+
+        if event.msg.chat.id not in group_ids:
             return
 
         if event.msg.userId == self.userId:
