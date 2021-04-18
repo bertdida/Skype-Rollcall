@@ -25,4 +25,4 @@ USER appuser
 
 COPY . .
 
-ENTRYPOINT ["python", "./app/app.py"]
+ENTRYPOINT ["python", "./run.py"]
