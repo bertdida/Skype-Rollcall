@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 skpy = "*"
+alembic = "*"
 
 [dev-packages]
 black = "*"

@@ -1,11 +1,14 @@
 import os
-import config
+from sqlalchemy import create_engine
+from config import config
 from skyperollcall import MySkypeEventLoop
 
-env = os.environ.get("ENV", "dev")
-config_class = "Production" if env == "prod" else "Development"
-
 if __name__ == "__main__":
-    app_config = getattr(config, config_class)
-    sk = MySkypeEventLoop(config=app_config, autoAck=True)
-    sk.loop()
+    engine = create_engine(config.DATABASE_URI)
+    with engine.connect() as conn:
+        print("✅ database connection stablished")
+
+        sk = MySkypeEventLoop(config=config, db_conn=conn, autoAck=True)
+        sk.loop()
+
+    conn.close()
