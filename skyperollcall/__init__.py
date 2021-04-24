@@ -6,9 +6,8 @@ commands = utils.load_commands()
 
 
 class MySkypeEventLoop(SkypeEventLoop):
-    def __init__(self, db_conn, config, **kwargs):
+    def __init__(self, config, **kwargs):
         self.config = config
-        self.db_conn = db_conn
         username = config.USERNAME
         password = config.PASSWORD
 
