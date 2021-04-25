@@ -14,3 +14,4 @@ session = Session()
 # autogenerate migration works
 from skyperollcall.models.channel import Channel
 from skyperollcall.models.user import User
+from skyperollcall.models.channeluser import ChannelUser
