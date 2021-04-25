@@ -16,22 +16,25 @@ class RollCall:
         channel = message.chat
 
         responsive_users = []
-        while True:
+        is_command_found = False
+
+        while not is_command_found:
             for curr_message in channel.getMsgs():
-                curr_author = curr_message.user
-                if curr_message.id != message.id and curr_author.id != author.id:
-                    responsive_users.append(curr_author.id)
-                break
-            else:
-                continue
-            break
+                if curr_message.id == message.id:
+                    is_command_found = True
+                    break
+
+                responsive_users.append(curr_message.user.id)
 
         users = [user for user in channel.users]
         responsive_users = set(responsive_users)
 
-        unresponsive_users = [user for user in users if user.id not in responsive_users]
-        mentions = [RollCall._create_mention(user) for user in unresponsive_users]
+        unresponsive_users = []
+        for user in users:
+            if user.id not in responsive_users and user.id != author.id:
+                unresponsive_users.append(user)
 
+        mentions = [RollCall._create_mention(user) for user in unresponsive_users]
         channel.sendMsg(" ".join(mentions), rich=True)
 
     @classmethod
