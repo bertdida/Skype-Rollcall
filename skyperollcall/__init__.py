@@ -30,8 +30,9 @@ class MySkypeEventLoop(SkypeEventLoop):
         if self.config.GROUP_IDS and event.msg.chat.id not in self.config.GROUP_IDS:
             return
 
-        command_name = event.msg.plain[1:]
-        Command = next((c for c in commands if c.name == command_name), None)
+        [command, *args] = event.msg.plain.lower().split()
+        command = command[1:]
+        Command = next((c for c in commands if c.name == command), None)
 
         if Command is not None:
             Command.execute(event)
