@@ -1,12 +1,10 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String
 from skyperollcall.models import Base
+from skyperollcall.models.mixins.BaseMixin import BaseMixin
 
 
-class User(Base):
-     __tablename__ = "user"
+class User(Base, BaseMixin):
+    __tablename__ = "user"
 
     id = Column(Integer, primary_key=True)
-    skype_id = Column(String(255), unique=True)
-    ignore_user = Column(Boolean)
-    admin = Column(Boolean)
-    channel_id = relationship("Channel",backref="user",order_by="Chennel.id")
+    skype_id = Column(String, unique=True, nullable=False)
