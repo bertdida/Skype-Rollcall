@@ -11,13 +11,12 @@ class Config:
         else []
     )
 
-    COMMAND_PREFIX = "!"
+    COMMAND_PREFIX = os.environ.get("COMMAND_PREFIX", "!")
 
 
 class Development(Config):
     ENV = "dev"
     GROUP_IDS = []
-    COMMAND_PREFIX = ">"
 
 
 class Production(Config):

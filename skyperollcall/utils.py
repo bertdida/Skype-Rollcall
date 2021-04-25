@@ -16,9 +16,6 @@ def load_commands():
     classes = []
     for module_name in module_names:
         module = importlib.import_module(".".join([commands.__name__, module_name]))
-
-        for attribute in dir(module):
-            if inspect.isclass(getattr(module, attribute)):
-                classes.append(getattr(module, attribute))
+        classes.append(getattr(module, module_name))
 
     return classes
