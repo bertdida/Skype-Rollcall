@@ -1,13 +1,10 @@
 import threading
+from skyperollcall import utils
 
 
 class RollCall:
     name = "rollcall"
     check_replies_interval = 60  # seconds
-
-    @staticmethod
-    def _create_mention(user):
-        return f'<at id="{user.id}">{user.name.first}</at>'
 
     @staticmethod
     def _check_replies(event):
@@ -34,7 +31,7 @@ class RollCall:
             if user.id not in responsive_users and user.id != author.id:
                 unresponsive_users.append(user)
 
-        mentions = [RollCall._create_mention(user) for user in unresponsive_users]
+        mentions = [utils.create_mention(user) for user in unresponsive_users]
         channel.sendMsg(" ".join(mentions), rich=True)
 
     @classmethod

@@ -19,3 +19,7 @@ def load_commands():
         classes.append(getattr(module, module_name))
 
     return classes
+
+
+def create_mention(user):
+    return f'<at id="{user.id}">{user.name.first}</at>'
