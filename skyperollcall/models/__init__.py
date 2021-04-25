@@ -12,6 +12,6 @@ session = Session()
 
 # we have to import all models below for alembic
 # autogenerate migration works
-from skyperollcall.models.channel import Channel
-from skyperollcall.models.user import User
-from skyperollcall.models.channeluser import ChannelUser
+from skyperollcall.models.Channel import Channel
+from skyperollcall.models.User import User
+from skyperollcall.models.ChannelUser import ChannelUser
