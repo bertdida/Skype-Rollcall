@@ -7,8 +7,11 @@ class BaseMixin:
         return f"<{self.__class__.__name__} id={self.id}>"
 
     @classmethod
-    def get(cls, id):
-        return session.query(cls).get(int(id))
+    def get(cls, **kwargs):
+        if not kwargs:
+            return cls.get_all()
+
+        return session.query(cls).filter_by(**kwargs).first()
 
     @classmethod
     def get_all(cls, **kwargs):
