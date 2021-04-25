@@ -20,20 +20,22 @@ class Admin:
         if not mentioned_users:
             return
 
-        channelDb = Channel.get(skype_id=channel.id)
+        channel_db = Channel.get(skype_id=channel.id)
 
         for user in mentioned_users:
-            userDb = User.get(skype_id=user.id)
-            if not userDb:
-                userDb = User()
-                userDb.skype_id = user.id
+            user_db = User.get(skype_id=user.id)
 
-            userDb = userDb.save()
-            channelUserDb = ChannelUser.get(user_id=userDb.id, channel_id=channelDb.id)
-            if not channelUserDb:
-                channelUserDb = ChannelUser()
-                channelUserDb.user_id = userDb.id
-                channelUserDb.channel_id = channelDb.id
+            if not user_db:
+                user_db = User()
+                user_db.skype_id = user.id
 
-            channelUserDb.is_admin = "--remove" not in args
-            channelUserDb.save()
+            user_db = user_db.save()
+            channel_user = ChannelUser.get(user_id=user_db.id, channel_id=channel_db.id)
+
+            if not channel_user:
+                channel_user = ChannelUser()
+                channel_user.user_id = user_db.id
+                channel_user.channel_id = channel_db.id
+
+            channel_user.is_admin = "--remove" not in args
+            channel_user.save()
