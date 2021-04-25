@@ -30,11 +30,10 @@ class Admin:
 
             userDb = userDb.save()
             channelUserDb = ChannelUser.get(user_id=userDb.id, channel_id=channelDb.id)
-
             if not channelUserDb:
                 channelUserDb = ChannelUser()
                 channelUserDb.user_id = userDb.id
                 channelUserDb.channel_id = channelDb.id
 
-            channelUserDb.is_admin = True
+            channelUserDb.is_admin = "--remove" not in args
             channelUserDb.save()
