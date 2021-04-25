@@ -9,7 +9,7 @@ class BaseMixin:
     @classmethod
     def get(cls, **kwargs):
         if not kwargs:
-            return cls.get_all()
+            return session.query(cls).first()
 
         return session.query(cls).filter_by(**kwargs).first()
 
