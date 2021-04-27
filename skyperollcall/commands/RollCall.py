@@ -1,4 +1,5 @@
 import threading
+from skyperollcall.models import session, User, Channel, ChannelUser
 from skyperollcall import utils
 
 
@@ -25,12 +26,33 @@ class RollCall:
 
         users = [user for user in channel.users]
         responsive_users = set(responsive_users)
+        channel_db = Channel.get(skype_id=channel.id)
 
         unresponsive_users = []
         for user in users:
-            if user.id not in responsive_users and user.id != author.id:
+            user_db = User.get(skype_id=user.id)
+
+            if not user_db:
+                user_db = User()
+                user_db.skype_id = user.id
+
+            user_db = user_db.save()
+            channel_user = ChannelUser.get(user_id=user_db.id, channel_id=channel_db.id)
+
+            if not channel_user:
+                channel_user = ChannelUser()
+                channel_user.user_id = user_db.id
+                channel_user.channel_id = channel_db.id
+
+            channel_user.save()
+            
+            if channel_user.is_ignore == 1 or channel_user.is_admin == 1:
+                pass
+
+            elif user.id not in responsive_users and user.id != author.id:
                 unresponsive_users.append(user)
 
+        print(unresponsive_users)
         mentions = [utils.create_mention(user) for user in unresponsive_users]
         channel.sendMsg(" ".join(mentions), rich=True)
 
