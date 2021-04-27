@@ -52,7 +52,6 @@ class RollCall:
             elif user.id not in responsive_users and user.id != author.id:
                 unresponsive_users.append(user)
 
-        print(unresponsive_users)
         mentions = [utils.create_mention(user) for user in unresponsive_users]
         channel.sendMsg(" ".join(mentions), rich=True)
 
