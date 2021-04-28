@@ -4,7 +4,7 @@ from skyperollcall.models import session
 
 class BaseMixin:
     def __repr__(self):
-        if not hasattr(self, 'id'):
+        if not hasattr(self, "id"):
             return f"<{self.__class__.__name__}>"
         return f"<{self.__class__.__name__} id={self.id}>"
 
@@ -30,6 +30,14 @@ class BaseMixin:
     def create(cls, **kwargs):
         instance = cls(**kwargs)
         return instance.save()
+
+    @classmethod
+    def first_or_create(cls, values={}, **kwargs):
+        instance = cls.get(**kwargs)
+        if instance:
+            return instance
+
+        return cls.create(**{**kwargs, **values})
 
     def update(self, **kwargs):
         for attribute, value in kwargs.items():

@@ -1,7 +1,7 @@
 import os
 from skpy import SkypeEventLoop, SkypeNewMessageEvent, SkypeGroupChat
 from skyperollcall import utils
-from skyperollcall.models import Channel
+from skyperollcall.models import ChannelUser
 
 commands = utils.load_commands()
 
@@ -21,8 +21,10 @@ class MySkypeEventLoop(SkypeEventLoop):
         if not isinstance(event.msg.chat, SkypeGroupChat):
             return
 
-        if not Channel.is_exists(skype_id=event.msg.chat.id):
-            Channel.create(skype_id=event.msg.chat.id)
+        if self.user.id != event.msg.user.id:
+            user = ChannelUser.from_event(event)
+            if not user.is_admin:
+                return
 
         if not event.msg.plain.startswith(self.config.COMMAND_PREFIX):
             return
