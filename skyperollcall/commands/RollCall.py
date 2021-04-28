@@ -45,7 +45,7 @@ class RollCall:
                 channel_user.channel_id = channel_db.id
 
             channel_user.save()
-            
+
             if channel_user.is_ignore == 1 or channel_user.is_admin == 1:
                 pass
 
