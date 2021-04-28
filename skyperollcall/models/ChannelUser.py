@@ -11,4 +11,4 @@ class ChannelUser(Base, BaseMixin):
     channel_id = Column(Integer, ForeignKey("channel.id"), nullable=False)
     user_id = Column(Integer, ForeignKey("user.id"), nullable=False)
     is_admin = Column(Boolean, server_default=false(), default=False)
-    is_ignore = Column(Boolean, server_default=false(), default=False)
+    is_ignored = Column(Boolean, server_default=false(), default=False)
