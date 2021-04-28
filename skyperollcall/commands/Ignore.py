@@ -1,8 +1,11 @@
 import re
 from skyperollcall.models import session, User, Channel, ChannelUser
 from skyperollcall import utils
+
+
 class Ignore:
     name = "ignore"
+
     @classmethod
     def execute(cls, event):
         message = event.msg.plain.strip()
@@ -34,6 +37,5 @@ class Ignore:
                 channel_user.user_id = user_db.id
                 channel_user.channel_id = channel_db.id
 
-            channel_user.is_ignore = "--remove" not in args
+            channel_user.is_ignored = "--remove" not in args
             channel_user.save()
-
