@@ -10,7 +10,6 @@ engine = create_engine(config.DATABASE_URI, echo=True)
 
 Session = sessionmaker(bind=engine)
 session = scoped_session(Session)
-#session = Session()
 
 # we have to import all models below for alembic
 # autogenerate migration works
