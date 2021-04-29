@@ -1,6 +1,6 @@
-from skpy import SkypeNewMessageEvent, SkypeGroupChat
 from sqlalchemy import Column, Integer, Boolean, PrimaryKeyConstraint, ForeignKey
 from sqlalchemy.sql.expression import false
+from skyperollcall import utils
 from skyperollcall.models import Base
 from skyperollcall.models.mixins.BaseMixin import BaseMixin
 
@@ -16,12 +16,10 @@ class ChannelUser(Base, BaseMixin):
 
     @classmethod
     def from_event(cls, event):
-        if not isinstance(event, SkypeNewMessageEvent):
-            raise ValueError
+        return utils.validate_event(cls._from_event)(event)
 
-        if not isinstance(event.msg.chat, SkypeGroupChat):
-            raise ValueError
-
+    @classmethod
+    def _from_event(cls, event):
         from skyperollcall.models.User import User
         from skyperollcall.models.Channel import Channel
 

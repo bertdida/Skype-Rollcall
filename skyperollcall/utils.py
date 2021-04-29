@@ -27,24 +27,30 @@ def create_mention(user):
     return f'<at id="{user.id}">{user.name.first}</at>'
 
 
+def validate_event(function):
+    from functools import wraps
+
+    @wraps(function)
+    def wrapper(event):
+        if not isinstance(event, SkypeNewMessageEvent):
+            raise ValueError
+
+        if not isinstance(event.msg.chat, SkypeGroupChat):
+            raise ValueError
+
+        return function(event)
+
+    return wrapper
+
+
+@validate_event
 def get_mentions(event):
-    if not isinstance(event, SkypeNewMessageEvent):
-        raise ValueError
-
-    if not isinstance(event.msg.chat, SkypeGroupChat):
-        raise ValueError
-
     args = get_args(event)
     users = [user for user in event.msg.chat.users]
     return [user for user in users if user.id in args]
 
 
+@validate_event
 def get_args(event):
-    if not isinstance(event, SkypeNewMessageEvent):
-        raise ValueError
-
-    if not isinstance(event.msg.chat, SkypeGroupChat):
-        raise ValueError
-
     [_, *args] = re.split("\s+", event.msg.plain.strip())
     return [arg.lstrip("@") for arg in args]
