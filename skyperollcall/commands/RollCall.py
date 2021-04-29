@@ -39,7 +39,7 @@ class RollCall:
             if channel_user.is_ignored or channel_user.is_admin:
                 continue
 
-            if user.id not in responsive_users and user.id != author.id:
+            if user.id in responsive_users or user.id == author.id:
                 continue
 
             unresponsive_users.append(user)
