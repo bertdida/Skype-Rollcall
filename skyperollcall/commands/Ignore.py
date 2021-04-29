@@ -23,19 +23,10 @@ class Ignore:
         channel_db = Channel.get(skype_id=channel.id)
 
         for user in mentioned_users:
-            user_db = User.get(skype_id=user.id)
-
-            if not user_db:
-                user_db = User()
-                user_db.skype_id = user.id
-
-            user_db = user_db.save()
-            channel_user = ChannelUser.get(user_id=user_db.id, channel_id=channel_db.id)
-
-            if not channel_user:
-                channel_user = ChannelUser()
-                channel_user.user_id = user_db.id
-                channel_user.channel_id = channel_db.id
+            user_db = User.first_or_create(skype_id=user.id)
+            channel_user = ChannelUser.first_or_create(
+                user_id=user_db.id, channel_id=channel_db.id
+            )
 
             channel_user.is_ignored = "--remove" not in args
             channel_user.save()
