@@ -21,10 +21,9 @@ class MySkypeEventLoop(SkypeEventLoop):
         if not isinstance(event.msg.chat, SkypeGroupChat):
             return
 
-        if self.user.id != event.msg.user.id:
-            user = ChannelUser.from_event(event)
-            if not user.is_admin:
-                return
+        user = ChannelUser.from_event(event)
+        if self.user.id != event.msg.user.id and not user.is_admin:
+            return
 
         if not event.msg.plain:
             return
