@@ -1,7 +1,9 @@
 import os
+import re
 import sys
 import importlib
 import inspect
+from skpy import SkypeNewMessageEvent, SkypeGroupChat
 from skyperollcall import commands
 
 
@@ -23,3 +25,26 @@ def load_commands():
 
 def create_mention(user):
     return f'<at id="{user.id}">{user.name.first}</at>'
+
+
+def get_mentions(event):
+    if not isinstance(event, SkypeNewMessageEvent):
+        raise ValueError
+
+    if not isinstance(event.msg.chat, SkypeGroupChat):
+        raise ValueError
+
+    args = get_args(event)
+    users = [user for user in event.msg.chat.users]
+    return [user for user in users if user.id in args]
+
+
+def get_args(event):
+    if not isinstance(event, SkypeNewMessageEvent):
+        raise ValueError
+
+    if not isinstance(event.msg.chat, SkypeGroupChat):
+        raise ValueError
+
+    [_, *args] = re.split("\s+", event.msg.plain.strip())
+    return [arg.lstrip("@") for arg in args]

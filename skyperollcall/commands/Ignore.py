@@ -1,4 +1,3 @@
-import re
 from skyperollcall.models import session, User, Channel, ChannelUser
 from skyperollcall import utils
 
@@ -8,24 +7,17 @@ class Ignore:
 
     @classmethod
     def execute(cls, event):
-        message = event.msg.plain.strip()
-        channel = event.msg.chat
-
-        [_, *args] = re.split("\s+", message)
-        args = [arg.lstrip("@") for arg in args]
-
-        users = [user for user in channel.users]
-        mentioned_users = [user for user in users if user.id in args]
-
+        mentioned_users = utils.get_mentions(event)
         if not mentioned_users:
             return
 
-        channel_db = Channel.get(skype_id=channel.id)
+        args = utils.get_args(event)
+        channel = Channel.get(skype_id=event.msg.chat.id)
 
-        for user in mentioned_users:
-            user_db = User.first_or_create(skype_id=user.id)
+        for curr_user in mentioned_users:
+            user = User.first_or_create(skype_id=curr_user.id)
             channel_user = ChannelUser.first_or_create(
-                user_id=user_db.id, channel_id=channel_db.id
+                user_id=user.id, channel_id=channel.id
             )
 
             channel_user.is_ignored = "--remove" not in args
