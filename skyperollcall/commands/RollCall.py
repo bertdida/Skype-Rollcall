@@ -44,6 +44,9 @@ class RollCall:
 
             unresponsive_users.append(user)
 
+        if not unresponsive_users:
+            return
+
         mentions = [utils.create_mention(user) for user in unresponsive_users]
         channel.sendMsg(" ".join(mentions), rich=True)
 
