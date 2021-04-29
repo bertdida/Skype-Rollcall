@@ -35,3 +35,9 @@ class ChannelUser(Base, BaseMixin):
         from skyperollcall.models.User import User
 
         return session.query(User).join(cls).filter(cls.is_ignored == True).all()
+
+    @classmethod
+    def get_admins(cls):
+        from skyperollcall.models.User import User
+
+        return session.query(User).join(cls).filter(cls.is_admin == True).all()

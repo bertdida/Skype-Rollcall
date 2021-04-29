@@ -1,3 +1,4 @@
+from skpy.msg import SkypeMsg
 from skyperollcall.models import session, User, Channel, ChannelUser
 from skyperollcall import utils
 
@@ -9,6 +10,7 @@ class Admin:
     def execute(cls, event):
         mentioned_users = utils.get_mentions(event)
         if not mentioned_users:
+            cls.send_admin_users(event)
             return
 
         args = utils.get_args(event)
@@ -26,3 +28,26 @@ class Admin:
                 channel_user.is_ignored = True
 
             channel_user.save()
+
+        cls.send_admin_users(event)
+
+    @classmethod
+    def send_admin_users(cls, event):
+        users = [user for user in event.msg.chat.users]
+        admin_users = ChannelUser.get_admins()
+
+        user_names = []
+        for curr_user in admin_users:
+            user = next((u for u in users if u.id == curr_user.skype_id), None)
+            if user:
+                user_names.append(f"{user.name.first} {user.name.last}")
+
+        if not user_names:
+            return
+
+        message = "{title}\n{names}".format(
+            title=SkypeMsg.bold("Admin Users"),
+            names="\n".join([f"- {n}" for n in user_names]),
+        )
+
+        event.msg.chat.sendMsg(message, rich=True)
