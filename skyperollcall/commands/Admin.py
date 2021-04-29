@@ -21,6 +21,7 @@ class Admin:
             return
 
         channel_db = Channel.get(skype_id=channel.id)
+        make_admin = "--remove" not in args
 
         for user in mentioned_users:
             user_db = User.first_or_create(skype_id=user.id)
@@ -28,5 +29,8 @@ class Admin:
                 user_id=user_db.id, channel_id=channel_db.id
             )
 
-            channel_user.is_admin = "--remove" not in args
+            channel_user.is_admin = make_admin
+            if make_admin:
+                channel_user.is_ignored = True
+
             channel_user.save()
