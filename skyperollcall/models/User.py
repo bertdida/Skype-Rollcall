@@ -12,7 +12,3 @@ class User(Base, BaseMixin):
     skype_id = Column(String, unique=True, nullable=False)
 
     channels = relationship("Channel", secondary="channel_user", back_populates="users")
-
-    def is_admin(self, channel):
-        channel_user = ChannelUser.get(user_id=self.id, channel_id=channel.id)
-        return False if not channel_user else channel_user.is_admin
