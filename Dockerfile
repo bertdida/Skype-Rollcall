@@ -24,5 +24,3 @@ WORKDIR /home/appuser
 USER appuser
 
 COPY . .
-
-ENTRYPOINT ["python", "./run.py"]

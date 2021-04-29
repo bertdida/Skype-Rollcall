@@ -7,3 +7,6 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    entrypoint: ./entrypoint.sh
+    volumes:
+      - .:/home/appuser
