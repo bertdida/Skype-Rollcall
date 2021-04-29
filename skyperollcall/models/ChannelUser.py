@@ -14,6 +14,9 @@ class ChannelUser(Base, BaseMixin):
     is_admin = Column(Boolean, server_default=false(), default=False)
     is_ignored = Column(Boolean, server_default=false(), default=False)
 
+    def __repr__(self):
+        return f"<ChannelUser user_id={self.user_id} channel_id={self.channel_id}>"
+
     @classmethod
     def from_event(cls, event):
         return utils.validate_event(cls._from_event)(event)
