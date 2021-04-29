@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from skyperollcall.models import Base
-from skyperollcall.models.mixins.BaseMixin import BaseMixin
+from skyperollcall.models.mixins import BaseMixin
 
 
 class Channel(Base, BaseMixin):

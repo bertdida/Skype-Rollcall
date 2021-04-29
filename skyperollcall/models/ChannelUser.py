@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, Boolean, PrimaryKeyConstraint, ForeignKe
 from sqlalchemy.sql.expression import false
 from skyperollcall import utils
 from skyperollcall.models import Base
-from skyperollcall.models.mixins.BaseMixin import BaseMixin
+from skyperollcall.models.mixins import BaseMixin
 
 
 class ChannelUser(Base, BaseMixin):
