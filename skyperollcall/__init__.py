@@ -26,6 +26,9 @@ class MySkypeEventLoop(SkypeEventLoop):
             if not user.is_admin:
                 return
 
+        if not event.msg.plain:
+            return
+
         if not event.msg.plain.startswith(self.config.COMMAND_PREFIX):
             return
 
