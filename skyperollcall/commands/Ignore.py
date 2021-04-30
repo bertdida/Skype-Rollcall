@@ -1,5 +1,3 @@
-from skpy.msg import SkypeMsg
-
 from skyperollcall import utils
 from skyperollcall.models import Channel, ChannelUser, User
 
@@ -30,21 +28,8 @@ class Ignore:
 
     @classmethod
     def send_ignored_users(cls, event):
-        users = [user for user in event.msg.chat.users]
-        ignored_users = ChannelUser.get_ignored()
-
-        user_names = []
-        for curr_user in ignored_users:
-            user = next((u for u in users if u.id == curr_user.skype_id), None)
-            if user:
-                user_names.append(f"{user.name.first} {user.name.last}")
-
-        if not user_names:
+        users = ChannelUser.get_ignored()
+        if not users:
             return
 
-        message = "{title}\n{names}".format(
-            title=SkypeMsg.bold("Ignored Users"),
-            names="\n".join([f"- {n}" for n in user_names]),
-        )
-
-        event.msg.chat.sendMsg(message, rich=True)
+        utils.send_name_list(event, users=users, title="Ignored Users")
