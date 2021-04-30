@@ -8,6 +8,11 @@ class RollCall:
     name = "rollcall"
     check_replies_interval = 60  # seconds
 
+    @classmethod
+    def execute(cls, event):
+        interval = float(cls.check_replies_interval)
+        threading.Timer(interval, cls._check_replies, [event]).start()
+
     @staticmethod
     def _check_replies(event):
         message = event.msg
@@ -50,8 +55,3 @@ class RollCall:
 
         mentions = [utils.create_mention(user) for user in unresponsive_users]
         channel.sendMsg(" ".join(mentions), rich=True)
-
-    @classmethod
-    def execute(cls, event):
-        interval = float(cls.check_replies_interval)
-        threading.Timer(interval, cls._check_replies, [event]).start()
