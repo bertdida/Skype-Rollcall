@@ -1,4 +1,5 @@
-from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy.exc import SQLAlchemyError
+
 from skyperollcall.models import session
 
 
@@ -54,7 +55,7 @@ class BaseMixin:
 
         try:
             session.commit()
-        except:
+        except SQLAlchemyError:
             session.rollback()
             raise
 

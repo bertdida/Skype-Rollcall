@@ -1,9 +1,9 @@
+import importlib
 import os
 import re
-import sys
-import importlib
-import inspect
-from skpy import SkypeNewMessageEvent, SkypeGroupChat
+
+from skpy import SkypeGroupChat, SkypeNewMessageEvent
+
 from skyperollcall import commands
 
 
@@ -52,5 +52,5 @@ def get_mentions(event):
 
 @validate_event
 def get_args(event):
-    [_, *args] = re.split("\s+", event.msg.plain.strip())
+    [_, *args] = re.split("\\s+", event.msg.plain.strip())
     return [arg.lstrip("@") for arg in args]

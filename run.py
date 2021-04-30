@@ -1,4 +1,3 @@
-import os
 from config import config
 from skyperollcall import MySkypeEventLoop
 

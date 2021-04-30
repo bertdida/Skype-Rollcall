@@ -1,1 +1,1 @@
-from skyperollcall.models.mixins.BaseMixin import BaseMixin
+from skyperollcall.models.mixins.BaseMixin import BaseMixin  # noqa: F401

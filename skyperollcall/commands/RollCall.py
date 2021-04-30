@@ -1,6 +1,7 @@
 import threading
-from skyperollcall.models import session, User, Channel, ChannelUser
+
 from skyperollcall import utils
+from skyperollcall.models import Channel, ChannelUser, User
 
 
 class RollCall:

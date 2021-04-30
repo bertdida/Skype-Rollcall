@@ -1,5 +1,5 @@
-import os
-from skpy import SkypeEventLoop, SkypeNewMessageEvent, SkypeGroupChat
+from skpy import SkypeEventLoop, SkypeGroupChat, SkypeNewMessageEvent
+
 from skyperollcall import utils
 from skyperollcall.models import ChannelUser
 

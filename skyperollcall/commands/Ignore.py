@@ -1,6 +1,7 @@
 from skpy.msg import SkypeMsg
-from skyperollcall.models import session, User, Channel, ChannelUser
+
 from skyperollcall import utils
+from skyperollcall.models import Channel, ChannelUser, User
 
 
 class Ignore:

@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, Boolean, PrimaryKeyConstraint, ForeignKey
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, PrimaryKeyConstraint
 from sqlalchemy.sql.expression import false
+
 from skyperollcall import utils
 from skyperollcall.models import Base, session
 from skyperollcall.models.mixins import BaseMixin
@@ -23,8 +24,8 @@ class ChannelUser(Base, BaseMixin):
 
     @classmethod
     def _from_event(cls, event):
-        from skyperollcall.models.User import User
         from skyperollcall.models.Channel import Channel
+        from skyperollcall.models.User import User
 
         channel = Channel.first_or_create(skype_id=event.msg.chat.id)
         user = User.first_or_create(skype_id=event.msg.user.id)
@@ -34,10 +35,10 @@ class ChannelUser(Base, BaseMixin):
     def get_ignored(cls):
         from skyperollcall.models.User import User
 
-        return session.query(User).join(cls).filter(cls.is_ignored == True).all()
+        return session.query(User).join(cls).filter(cls.is_ignored).all()
 
     @classmethod
     def get_admins(cls):
         from skyperollcall.models.User import User
 
-        return session.query(User).join(cls).filter(cls.is_admin == True).all()
+        return session.query(User).join(cls).filter(cls.is_admin).all()
