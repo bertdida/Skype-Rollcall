@@ -8,6 +8,7 @@ from skpy.msg import SkypeMsg
 from skyperollcall import commands
 from skyperollcall.models import session
 
+
 def load_commands():
     path = os.path.dirname(os.path.abspath(commands.__file__))
 
@@ -80,5 +81,6 @@ def send_name_list(event, users, title):
 
     event.msg.chat.sendMsg(message, rich=True)
 
+
 def session_close():
-    session.remove();
+    session.remove()
