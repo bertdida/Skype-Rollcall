@@ -6,7 +6,7 @@ from skyperollcall.models import Channel, ChannelUser, User
 
 class RollCall:
     name = "rollcall"
-    check_replies_interval = 60  # seconds
+    check_replies_interval = 10  # seconds
 
     @classmethod
     def execute(cls, event):
@@ -55,3 +55,4 @@ class RollCall:
 
         mentions = [utils.create_mention(user) for user in unresponsive_users]
         channel.sendMsg(" ".join(mentions), rich=True)
+        utils.session_close()
