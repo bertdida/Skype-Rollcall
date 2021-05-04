@@ -1,3 +1,5 @@
+import argparse
+import shlex
 import threading
 
 from skyperollcall import utils
@@ -6,12 +8,15 @@ from skyperollcall.models import Channel, ChannelUser, User
 
 class RollCall:
     name = "rollcall"
-    check_replies_interval = 10  # seconds
 
     @classmethod
     def execute(cls, event):
-        interval = float(cls.check_replies_interval)
-        threading.Timer(interval, cls._check_replies, [event]).start()
+        parser = argparse.ArgumentParser()
+        parser.add_argument("--until", default=60 * 5, type=float)
+
+        message = event.msg.plain.strip()
+        args, *_ = parser.parse_known_args(shlex.split(message))
+        threading.Timer(args.until, cls._check_replies, [event]).start()
 
     @staticmethod
     def _check_replies(event):
