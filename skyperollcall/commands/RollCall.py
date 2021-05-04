@@ -6,17 +6,28 @@ from skyperollcall import utils
 from skyperollcall.models import Channel, ChannelUser, User
 
 
+class ArgumentParserError(Exception):
+    pass
+
+
+class ThrowingArgumentParser(argparse.ArgumentParser):
+    def error(self, message):
+        raise ArgumentParserError(message)
+
+
 class RollCall:
     name = "rollcall"
 
     @classmethod
     def execute(cls, event):
-        parser = argparse.ArgumentParser()
+        parser = ThrowingArgumentParser()
         parser.add_argument("--until", default=60 * 5, type=float)
 
-        message = event.msg.plain.strip()
-        args, *_ = parser.parse_known_args(shlex.split(message))
-        threading.Timer(args.until, cls._check_replies, [event]).start()
+        try:
+            args, *_ = parser.parse_known_args(shlex.split(event.msg.plain.strip()))
+            threading.Timer(args.until, cls._check_replies, [event]).start()
+        except ArgumentParserError as error:
+            event.msg.chat.sendMsg(f"Error: {str(error)}")
 
     @staticmethod
     def _check_replies(event):
