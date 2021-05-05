@@ -21,11 +21,11 @@ class RollCall:
     @classmethod
     def execute(cls, event):
         parser = ThrowingArgumentParser()
-        parser.add_argument("--until", default=60 * 5, type=float)
+        parser.add_argument("--until", default=5, type=float)
 
         try:
             args, *_ = parser.parse_known_args(shlex.split(event.msg.plain.strip()))
-            threading.Timer(args.until, cls._check_replies, [event]).start()
+            threading.Timer(args.until * 60, cls._check_replies, [event]).start()
         except ArgumentParserError as error:
             event.msg.chat.sendMsg(f"Error: {str(error)}")
 
