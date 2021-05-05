@@ -21,7 +21,7 @@ class RollCall:
     @classmethod
     def execute(cls, event):
         parser = ThrowingArgumentParser()
-        parser.add_argument("--until", default=1, type=float)
+        parser.add_argument("--until", default=5, type=float)
         parser.add_argument("--say", default='', type=str)
 
         try:
