@@ -21,16 +21,17 @@ class RollCall:
     @classmethod
     def execute(cls, event):
         parser = ThrowingArgumentParser()
-        parser.add_argument("--until", default=5, type=float)
+        parser.add_argument("--until", default=1, type=float)
+        parser.add_argument("--say", default='', type=str)
 
         try:
             args, *_ = parser.parse_known_args(shlex.split(event.msg.plain.strip()))
-            threading.Timer(args.until * 60, cls._check_replies, [event]).start()
+            threading.Timer(args.until * 60, cls._check_replies, [event, args.say]).start()
         except ArgumentParserError as error:
             event.msg.chat.sendMsg(f"Error: {str(error)}")
 
     @staticmethod
-    def _check_replies(event):
+    def _check_replies(event, say):
         message = event.msg
         author = message.user
         channel = message.chat
@@ -44,8 +45,12 @@ class RollCall:
                     is_command_found = True
                     break
 
-                responsive_users.append(curr_message.user.id)
-
+                if say == '':
+                    responsive_users.append(curr_message.user.id)
+                else:
+                    if curr_message.content == say:
+                        responsive_users.append(curr_message.user.id)
+               
         users = [user for user in channel.users]
         responsive_users = set(responsive_users)
 
