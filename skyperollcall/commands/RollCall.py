@@ -45,7 +45,7 @@ class RollCall:
                     is_command_found = True
                     break
 
-                if not args.gimme or curr_message.content == args.gimme:
+                if not args.gimme or curr_message.content.strip() == args.gimme:
                     responsive_users.append(curr_message.user.id)
 
         users = [user for user in channel.users]
