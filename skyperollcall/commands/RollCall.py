@@ -5,7 +5,7 @@ from threading import Timer
 from skyperollcall import utils
 from skyperollcall.models import Channel, ChannelUser
 from skyperollcall.models import RollCall as RollCallModel
-from skyperollcall.models import User
+from skyperollcall.models import User, session
 
 
 class ArgumentParserError(Exception):
@@ -83,4 +83,4 @@ class RollCall:
 
         mentions = [utils.create_mention(user) for user in unresponsive_users]
         channel.sendMsg(" ".join(mentions), rich=True)
-        utils.session_close()
+        session.remove()

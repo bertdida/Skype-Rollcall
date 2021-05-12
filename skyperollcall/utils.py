@@ -6,7 +6,6 @@ from skpy import SkypeGroupChat, SkypeNewMessageEvent
 from skpy.msg import SkypeMsg
 
 from skyperollcall import commands
-from skyperollcall.models import session
 
 
 def load_commands():
@@ -80,7 +79,3 @@ def send_name_list(event, users, title):
     )
 
     event.msg.chat.sendMsg(message, rich=True)
-
-
-def session_close():
-    session.remove()
