@@ -1,9 +1,11 @@
 import argparse
 import shlex
-import threading
+from threading import Timer
 
 from skyperollcall import utils
-from skyperollcall.models import Channel, ChannelUser, User
+from skyperollcall.models import Channel, ChannelUser
+from skyperollcall.models import RollCall as RollCallModel
+from skyperollcall.models import User
 
 
 class ArgumentParserError(Exception):
@@ -24,14 +26,18 @@ class RollCall:
         parser.add_argument("--until", default=5, type=float)
         parser.add_argument("--gimme", default="", type=str)
 
+        user = User.get(skype_id=event.msg.user.id)
+        roll_call = RollCallModel.create(user_id=user.id)
+
         try:
             args, *_ = parser.parse_known_args(shlex.split(event.msg.plain.strip()))
-            threading.Timer(args.until * 60, cls._check_replies, [event, args]).start()
+            timer = Timer(args.until * 60, cls._check_replies, [event, args, roll_call])
+            timer.start()
         except ArgumentParserError as error:
             event.msg.chat.sendMsg(f"Error: {str(error)}")
 
     @staticmethod
-    def _check_replies(event, args):
+    def _check_replies(event, args, roll_call):
         message = event.msg
         author = message.user
         channel = message.chat
@@ -52,6 +58,7 @@ class RollCall:
         responsive_users = set(responsive_users)
 
         unresponsive_users = []
+        roll_call_users = []
         channel_db = Channel.get(skype_id=channel.id)
 
         for user in users:
@@ -67,9 +74,12 @@ class RollCall:
                 continue
 
             unresponsive_users.append(user)
+            roll_call_users.append(user_db)
 
         if not unresponsive_users:
             return
+
+        roll_call.add_users(roll_call_users)
 
         mentions = [utils.create_mention(user) for user in unresponsive_users]
         channel.sendMsg(" ".join(mentions), rich=True)

@@ -5,7 +5,9 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from config import config
 
 Base = declarative_base()
-engine = create_engine(config.DATABASE_URI, echo=True)
+engine = create_engine(
+    config.DATABASE_URI, connect_args={"check_same_thread": False}, echo=True
+)
 
 Session = sessionmaker(bind=engine)
 session = scoped_session(Session)
