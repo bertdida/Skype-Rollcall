@@ -17,11 +17,20 @@ class ThrowingArgumentParser(argparse.ArgumentParser):
         raise ArgumentParserError(message)
 
 
+timer = None
+
+
 class RollCall:
     name = "rollcall"
 
     @classmethod
     def execute(cls, event):
+        global timer
+
+        if timer and timer.is_alive():
+            event.msg.chat.sendMsg("Rollcall is ongoing...")
+            return
+
         parser = ThrowingArgumentParser()
         parser.add_argument("--until", default=5, type=float)
         parser.add_argument("--gimme", default="", type=str)
