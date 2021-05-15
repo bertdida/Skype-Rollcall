@@ -21,6 +21,9 @@ ENV PATH="/.venv/bin:$PATH"
 
 RUN useradd --create-home appuser
 WORKDIR /home/appuser
-USER appuser
 
+USER appuser
 COPY . .
+
+USER root
+RUN chmod +x entrypoint.sh
