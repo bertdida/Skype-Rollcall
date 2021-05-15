@@ -35,5 +35,6 @@ class MySkypeEventLoop(SkypeEventLoop):
         command = command[1:]
         Command = next((c for c in commands if c.name == command), None)
 
+        event.client = self
         if Command is not None:
             Command.execute(event)

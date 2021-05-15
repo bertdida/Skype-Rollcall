@@ -82,6 +82,9 @@ class RollCall:
             if user.id in responsive_users or user.id == author.id:
                 continue
 
+            if user.id == event.client.user.id:
+                continue
+
             unresponsive_users.append(user)
             roll_call_users.append(user_db)
 
