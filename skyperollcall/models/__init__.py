@@ -6,7 +6,7 @@ from config import config
 
 Base = declarative_base()
 engine = create_engine(
-    config.DATABASE_URI, connect_args={"check_same_thread": False}, echo=True
+    config.DATABASE_URL, connect_args={"check_same_thread": False}, echo=True
 )
 
 Session = sessionmaker(bind=engine)

@@ -2,7 +2,7 @@ import os
 
 
 class Config:
-    DATABASE_URI = os.environ["DATABASE_URI"]
+    DATABASE_URL = os.environ["DATABASE_URL"]
     USERNAME = os.environ["SKYPE_USERNAME"]
     PASSWORD = os.environ["SKYPE_PASSWORD"]
     COMMAND_PREFIX = os.environ.get("COMMAND_PREFIX", "!")
