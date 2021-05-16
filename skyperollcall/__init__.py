@@ -1,5 +1,6 @@
 from skpy import SkypeEventLoop, SkypeGroupChat, SkypeNewMessageEvent
 
+from config import config
 from skyperollcall import utils
 from skyperollcall.models import ChannelUser
 
@@ -7,8 +8,7 @@ commands = utils.load_commands()
 
 
 class MySkypeEventLoop(SkypeEventLoop):
-    def __init__(self, config, **kwargs):
-        self.config = config
+    def __init__(self, **kwargs):
         username = config.USERNAME
         password = config.PASSWORD
 
@@ -30,7 +30,7 @@ class MySkypeEventLoop(SkypeEventLoop):
         if not event.msg.plain:
             return
 
-        if not event.msg.plain.startswith(self.config.COMMAND_PREFIX):
+        if not event.msg.plain.startswith(config.COMMAND_PREFIX):
             return
 
         [command, *_] = event.msg.plain.lower().split()
