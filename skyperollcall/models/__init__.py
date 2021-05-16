@@ -5,9 +5,12 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from config import config
 
 Base = declarative_base()
-engine = create_engine(
-    config.DATABASE_URL, connect_args={"check_same_thread": False}, echo=True
-)
+
+connect_args = {}
+if config.DATABASE_URL.startswith("sqlite"):
+    connect_args["check_same_thread"] = False
+
+engine = create_engine(config.DATABASE_URL, connect_args=connect_args, echo=True)
 
 Session = sessionmaker(bind=engine)
 session = scoped_session(Session)
