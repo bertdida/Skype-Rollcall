@@ -27,9 +27,16 @@ class ChannelUser(Base, BaseMixin):
         from skyperollcall.models.Channel import Channel
         from skyperollcall.models.User import User
 
+        user_values = {}
+        if event.client.user.id == event.msg.user.id:
+            user_values["is_admin"] = True
+            user_values["is_ignored"] = True
+
         channel = Channel.first_or_create(skype_id=event.msg.chat.id)
         user = User.first_or_create(skype_id=event.msg.user.id)
-        return cls.first_or_create(channel_id=channel.id, user_id=user.id)
+        return cls.first_or_create(
+            channel_id=channel.id, user_id=user.id, values=user_values
+        )
 
     @classmethod
     def get_ignored(cls):
