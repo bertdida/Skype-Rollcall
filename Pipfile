@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 skpy = "*"
 alembic = "*"
+psycopg2 = "*"
 
 [dev-packages]
 black = "*"
