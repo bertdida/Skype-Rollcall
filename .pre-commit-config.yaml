@@ -8,14 +8,17 @@ repos:
     rev: v5.8.0
     hooks:
       - id: isort
+        exclude: alembic/
 
   - repo: https://github.com/psf/black
     rev: 21.4b2
     hooks:
       - id: black
         language_version: python3.9
+        exclude: alembic/
 
   - repo: https://gitlab.com/pycqa/flake8
     rev: 3.9.1
     hooks:
       - id: flake8
+        exclude: alembic/
