@@ -10,9 +10,7 @@ connect_args = {}
 if config.DATABASE_URL.startswith("sqlite"):
     connect_args["check_same_thread"] = False
 
-engine = create_engine(
-    config.DATABASE_URL, connect_args=connect_args, echo=config.ENV == "dev"
-)
+engine = create_engine(config.DATABASE_URL, connect_args=connect_args, echo=True)
 
 Session = sessionmaker(bind=engine)
 session = scoped_session(Session)
