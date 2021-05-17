@@ -67,8 +67,14 @@ def send_name_list(event, users, title):
 
     for curr_user in users:
         user = next((u for u in channel_users if u.id == curr_user.skype_id), None)
-        if user:
-            user_names.append(f"{user.name.first} {user.name.last}")
+        if not user:
+            continue
+
+        users_name = user.name.first
+        if user.name.last:
+            users_name = f"{users_name} {user.name.last}"
+
+        user_names.append(users_name)
 
     if not user_names:
         return
