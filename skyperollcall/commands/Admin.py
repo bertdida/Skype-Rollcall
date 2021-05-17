@@ -22,6 +22,9 @@ class Admin:
                 user_id=user.id, channel_id=channel.id
             )
 
+            if user.skype_id == event.client.user.id:
+                continue
+
             channel_user.is_admin = make_admin
             if make_admin:
                 channel_user.is_ignored = True

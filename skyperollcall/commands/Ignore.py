@@ -21,6 +21,9 @@ class Ignore:
                 user_id=user.id, channel_id=channel.id
             )
 
+            if user.skype_id == event.client.user.id:
+                continue
+
             channel_user.is_ignored = "--remove" not in args
             channel_user.save()
 
