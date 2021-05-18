@@ -33,6 +33,8 @@ class ChannelUser(Base, BaseMixin):
             user_values["is_ignored"] = True
 
         channel = Channel.first_or_create(skype_id=event.msg.chat.id)
+        channel.update(name=event.msg.chat.topic)
+
         user = User.first_or_create(skype_id=event.msg.user.id)
         return cls.first_or_create(
             channel_id=channel.id, user_id=user.id, values=user_values

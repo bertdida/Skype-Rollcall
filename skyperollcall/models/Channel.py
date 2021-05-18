@@ -10,5 +10,6 @@ class Channel(Base, BaseMixin):
 
     id = Column(Integer, primary_key=True)
     skype_id = Column(String, unique=True, nullable=False)
+    name = Column(String, nullable=True)
 
     users = relationship("User", secondary="channel_user", back_populates="channels")
