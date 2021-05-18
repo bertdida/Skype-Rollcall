@@ -2,7 +2,7 @@ from sqlalchemy import Boolean, Column, ForeignKey, Integer, PrimaryKeyConstrain
 from sqlalchemy.sql.expression import false
 
 from skyperollcall import utils
-from skyperollcall.models import Base, session
+from skyperollcall.models import Base
 from skyperollcall.models.mixins import BaseMixin
 
 
@@ -39,15 +39,3 @@ class ChannelUser(Base, BaseMixin):
         return cls.first_or_create(
             channel_id=channel.id, user_id=user.id, values=user_values
         )
-
-    @classmethod
-    def get_ignored(cls):
-        from skyperollcall.models.User import User
-
-        return session.query(User).join(cls).filter(cls.is_ignored).all()
-
-    @classmethod
-    def get_admins(cls):
-        from skyperollcall.models.User import User
-
-        return session.query(User).join(cls).filter(cls.is_admin).all()

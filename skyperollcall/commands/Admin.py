@@ -8,13 +8,14 @@ class Admin:
     @classmethod
     def execute(cls, event):
         mentioned_users = utils.get_mentions(event)
+        channel = Channel.get(skype_id=event.msg.chat.id)
+
         if not mentioned_users:
-            cls.send_admin_users(event)
+            cls.send_admin_users(event, channel)
             return
 
         args = utils.get_args(event)
         make_admin = "--remove" not in args
-        channel = Channel.get(skype_id=event.msg.chat.id)
 
         for curr_user in mentioned_users:
             user = User.first_or_create(skype_id=curr_user.id)
@@ -31,11 +32,11 @@ class Admin:
 
             channel_user.save()
 
-        cls.send_admin_users(event)
+        cls.send_admin_users(event, channel)
 
     @classmethod
-    def send_admin_users(cls, event):
-        users = ChannelUser.get_admins()
+    def send_admin_users(cls, event, channel):
+        users = channel.get_admins()
         if not users:
             return
 

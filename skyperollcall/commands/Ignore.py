@@ -8,12 +8,13 @@ class Ignore:
     @classmethod
     def execute(cls, event):
         mentioned_users = utils.get_mentions(event)
+        channel = Channel.get(skype_id=event.msg.chat.id)
+
         if not mentioned_users:
-            cls.send_ignored_users(event)
+            cls.send_ignored_users(event, channel)
             return
 
         args = utils.get_args(event)
-        channel = Channel.get(skype_id=event.msg.chat.id)
 
         for curr_user in mentioned_users:
             user = User.first_or_create(skype_id=curr_user.id)
@@ -27,11 +28,11 @@ class Ignore:
             channel_user.is_ignored = "--remove" not in args
             channel_user.save()
 
-        cls.send_ignored_users(event)
+        cls.send_ignored_users(event, channel)
 
     @classmethod
-    def send_ignored_users(cls, event):
-        users = ChannelUser.get_ignored()
+    def send_ignored_users(cls, event, channel):
+        users = channel.get_ignored()
         if not users:
             return
 
