@@ -32,7 +32,7 @@ class Ignore:
 
     @classmethod
     def send_ignored_users(cls, event, channel):
-        users = channel.get_ignored()
+        users = channel.get_ignored_users()
         if not users:
             return
 

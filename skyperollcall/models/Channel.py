@@ -14,7 +14,7 @@ class Channel(Base, BaseMixin):
 
     users = relationship("User", secondary="channel_user", back_populates="channels")
 
-    def get_ignored(self):
+    def get_ignored_users(self):
         from skyperollcall.models.ChannelUser import ChannelUser
         from skyperollcall.models.User import User
 
@@ -26,7 +26,7 @@ class Channel(Base, BaseMixin):
             .all()
         )
 
-    def get_admins(self):
+    def get_admin_users(self):
         from skyperollcall.models.ChannelUser import ChannelUser
         from skyperollcall.models.User import User
 

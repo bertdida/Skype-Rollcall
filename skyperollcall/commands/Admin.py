@@ -36,7 +36,7 @@ class Admin:
 
     @classmethod
     def send_admin_users(cls, event, channel):
-        users = channel.get_admins()
+        users = channel.get_admin_users()
         if not users:
             return
 
