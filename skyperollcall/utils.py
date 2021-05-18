@@ -25,7 +25,7 @@ def load_commands():
 
 
 def create_mention(user):
-    return f'<at id="{user.id}">{user.name.first}</at>'
+    return f'<at id="{user.id}">{user.name.first.strip()}</at>'
 
 
 def validate_event(function):
