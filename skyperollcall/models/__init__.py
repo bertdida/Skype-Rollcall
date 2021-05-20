@@ -19,6 +19,8 @@ session = scoped_session(Session)
 # autogenerate migration works
 from skyperollcall.models.Channel import Channel  # noqa: E402, F401
 from skyperollcall.models.ChannelUser import ChannelUser  # noqa: E402, F401
+from skyperollcall.models.Group import Group  # noqa: E402, F401
+from skyperollcall.models.GroupUser import GroupUser  # noqa: E402, F401
 from skyperollcall.models.RollCall import RollCall  # noqa: E402, F401
 from skyperollcall.models.RollCallLateResponder import (  # noqa: E402, F401
     RollCallLateResponder,
