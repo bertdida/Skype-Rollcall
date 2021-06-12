@@ -93,5 +93,6 @@ class RollCall:
 
         roll_call.add_users(roll_call_users)
 
+        unresponsive_users.sort(key=utils.get_mention_name)
         mentions = [utils.create_mention(user) for user in unresponsive_users]
         channel.sendMsg(" ".join(mentions), rich=True)

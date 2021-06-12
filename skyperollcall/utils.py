@@ -25,7 +25,12 @@ def load_commands():
 
 
 def create_mention(user):
-    return f'<at id="{user.id}">{user.name.first.strip()}</at>'
+    return f'<at id="{user.id}">{get_mention_name(user)}</at>'
+
+
+def get_mention_name(user):
+    retval = user.name.first if user.name.first is not None else user.id
+    return retval.strip()
 
 
 def validate_event(function):
