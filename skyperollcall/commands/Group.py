@@ -38,6 +38,11 @@ class Group:
             group = GroupModel.get(name=args.name)
 
             if group:
+                if "--delete" in utils.get_args(event):
+                    group.delete()
+                    cls.send_group_names(event, channel)
+                    return
+
                 if mentions:
                     users = User.get_users_from_mentions(mentions)
 
