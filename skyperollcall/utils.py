@@ -75,7 +75,7 @@ def send_name_list(event, users, title):
         if not user:
             continue
 
-        users_name = user.name.first
+        users_name = get_mention_name(user)
         if user.name.last:
             users_name = f"{users_name} {user.name.last}"
 
