@@ -30,9 +30,11 @@ class Group(Base, BaseMixin):
         from skyperollcall.models import session
         from skyperollcall.models.GroupUser import GroupUser
 
-        composite_values = tuple(((self.id, u.id) for u in users))
-        query = "DELETE FROM {table} WHERE (group_id, user_id) IN {composite_values}".format(  # noqa: E501
-            table=GroupUser.__tablename__, composite_values=composite_values
+        where_ins = tuple((self.id, u.id) for u in users)
+        where_ins = "(%s)" % ", ".join(map(repr, where_ins))  # removes trailing comma
+
+        query = "DELETE FROM {table} WHERE (group_id, user_id) IN {where_ins}".format(  # noqa: E501
+            table=GroupUser.__tablename__, where_ins=where_ins
         )
 
         session.execute(query)
