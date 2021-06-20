@@ -4,6 +4,7 @@ from threading import Timer
 
 from skyperollcall import utils
 from skyperollcall.models import Channel, ChannelUser
+from skyperollcall.models import Group as GroupModel
 from skyperollcall.models import RollCall as RollCallModel
 from skyperollcall.models import User
 
@@ -34,19 +35,29 @@ class RollCall:
         parser = ThrowingArgumentParser()
         parser.add_argument("--until", default=5, type=float)
         parser.add_argument("--gimme", default="", type=str)
+        parser.add_argument("--group", default="", type=str)
 
         user = User.get(skype_id=event.msg.user.id)
         roll_call = RollCallModel.create(user_id=user.id)
 
         try:
             args, *_ = parser.parse_known_args(shlex.split(event.msg.plain.strip()))
-            timer = Timer(args.until * 60, cls._check_replies, [event, args, roll_call])
+
+            group = None
+            if args.group:
+                group = GroupModel.get(name=args.group)
+                if not group:
+                    event.msg.chat.sendMsg(f"Error: Group {args.group} not found")
+                    return
+
+            timer_func_args = [event, args, roll_call, group]
+            timer = Timer(args.until * 60, cls._check_replies, timer_func_args)
             timer.start()
         except ArgumentParserError as error:
             event.msg.chat.sendMsg(f"Error: {str(error)}")
 
     @staticmethod
-    def _check_replies(event, args, roll_call):
+    def _check_replies(event, args, roll_call, group=None):
         message = event.msg
         author = message.user
         channel = message.chat
@@ -64,6 +75,10 @@ class RollCall:
                     responsive_users.append(curr_message.user.id)
 
         users = [user for user in channel.users]
+        if group:
+            user_ids = [user.skype_id for user in group.users]
+            users = [user for user in users if user.id in user_ids]
+
         responsive_users = set(responsive_users)
 
         unresponsive_users = []
