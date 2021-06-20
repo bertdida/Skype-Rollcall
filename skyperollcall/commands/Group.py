@@ -51,7 +51,7 @@ class Group:
 
             if not mentions:
                 GroupModel.create(name=args.name, channel_id=channel.id)
-                cls.send_group_users(event, group)
+                cls.send_group_names(event, channel)
                 return
 
             event.msg.chat.sendMsg(f"Error: {args.name} not found")
