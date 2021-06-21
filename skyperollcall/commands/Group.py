@@ -44,7 +44,7 @@ class Group:
                     return
 
                 if mentions:
-                    users = User.get_users_from_mentions(mentions)
+                    users = User.get_from_mentions(channel, mentions)
 
                     if "--remove" in utils.get_args(event):
                         group.remove_users(users)

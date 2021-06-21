@@ -15,8 +15,13 @@ class User(Base, BaseMixin):
     groups = relationship("Group", secondary="group_user", back_populates="users")
 
     @classmethod
-    def get_users_from_mentions(cls, mentions):
-        from skyperollcall.models import session
+    def get_from_mentions(cls, channel, mentions):
+        from skyperollcall.models import ChannelUser
 
-        skype_ids = [u.id for u in mentions]
-        return session.query(cls).filter(cls.skype_id.in_(skype_ids)).all()
+        retval = []
+        for mention in mentions:
+            user = cls.first_or_create(skype_id=mention.id)
+            ChannelUser.first_or_create(channel_id=channel.id, user_id=user.id)
+            retval.append(user)
+
+        return retval
