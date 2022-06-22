@@ -28,7 +28,7 @@ Main use of this is for workgroups or in a classroom setting, so the Advisor/HR 
 
 1. Login to your Skype account, this is the account you used on the `.env` file.
 2. Create a group chat and invite users.
-3. Send `:ping:`. Your account should send `pong` automatically.
+3. Send `:ping`. Your account should send `pong` automatically.
 4. By default, your account is the only account that can utilize the commands. You can add others by sending `:admin @firstadmin @secondadmin`.
 
 ## Deployment
